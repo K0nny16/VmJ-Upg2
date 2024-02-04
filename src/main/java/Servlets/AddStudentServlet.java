@@ -20,8 +20,8 @@ public class AddStudentServlet extends HttpServlet {
 
         out.println("<body>");
         out.println("<nav>");
+        out.println("<a href= http://localhost:9090/addStudents> Add a student</a>");
         out.println("<a href= http://localhost:9090/addCourses> Add a course</a>");
-        out.println("<a href= http://localhost:9090/Courses> Courses</a>");
         out.println("<a href= http://localhost:9090/Students> Students</a>");
         out.println("<a href= http://localhost:9090/Attendance> Sign up for courses</a>");
         out.println("</nav>");

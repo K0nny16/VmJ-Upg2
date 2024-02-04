@@ -20,6 +20,13 @@ public class StudentsServlet extends HttpServlet {
         PrintWriter out = resp.getWriter();
         out.println("<html>");
         out.println("<head><title>Student List</title></head>");
+        out.println("<body>");
+        out.println("<nav>");
+        out.println("<a href= http://localhost:9090/addStudents> Add a student</a>");
+        out.println("<a href= http://localhost:9090/addCourses> Add a course</a>");
+        out.println("<a href= http://localhost:9090/Students> Students</a>");
+        out.println("<a href= http://localhost:9090/Attendance> Sign up for courses</a>");
+        out.println("</nav>");
         out.println("<h2>Search for a Student</h2>");
         out.println("<form method=\"post\" action=\"/Students\">");
         out.println("First Name: <input type=\"text\" name=\"fname\"><br>");

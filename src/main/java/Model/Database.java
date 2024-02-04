@@ -17,7 +17,7 @@ public class Database {
             Statement statement = conn.createStatement();
             ResultSet rs = statement.executeQuery("SELECT *FROM Students");
             while(rs.next()){
-                studentInfo = rs.getString("fname")+","+rs.getString("lname")+","+rs.getString("town")+","+rs.getString("hobby");
+                studentInfo = rs.getString("fname")+","+rs.getString("lname")+","+rs.getString("town")+","+rs.getString("hobby")+","+rs.getInt("id");
                 student.add(studentInfo);
             }
             conn.close();
@@ -35,7 +35,7 @@ public class Database {
             Statement statement = conn.createStatement();
             ResultSet rs = statement.executeQuery("SELECT *FROM Courses");
             while(rs.next()){
-                coursesInfo = rs.getString("name")+","+rs.getInt("YHP")+","+rs.getString("description")+","+rs.getString("lector");
+                coursesInfo = rs.getString("name")+","+rs.getInt("YHP")+","+rs.getString("description")+","+rs.getString("lector")+","+rs.getInt("id");
                 courses.add(coursesInfo);
             }
             conn.close();
@@ -101,4 +101,35 @@ public class Database {
             return false;
         }
     }
+    public static boolean enroll(int courseId,int studentId){
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(getConnection(dotenv.get("User_Port"),dotenv.get("Admin_User"),dotenv.get("User_DB"),dotenv.get("Admin_PW")));
+            if(isStudentEnrolled(conn,courseId,studentId))
+                return false;
+            String sql = "INSERT INTO attendance (students_id,courses_id) VALUES (?,?)";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1,studentId);
+            ps.setInt(2,courseId);
+            int rowsChanged = ps.executeUpdate();
+            conn.close();
+            return rowsChanged > 0;
+        }catch(Exception ex){
+            System.out.println("Error "+ex.getMessage());
+            return false;
+        }
+    }
+    private static boolean isStudentEnrolled(Connection conn,int courseId,int studentId) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM attendance WHERE student_id = ? AND courses_id ?";
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setInt(1,studentId);
+        ps.setInt(2,courseId);
+        ResultSet rs = ps.executeQuery();
+        if(rs.next()){
+            int count = rs.getInt(1);
+            return count > 0;
+        }
+        return false;
+    }
+    //keep
 }

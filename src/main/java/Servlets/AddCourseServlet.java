@@ -20,7 +20,7 @@ public class AddCourseServlet extends HttpServlet {
         out.println("<body>");
         out.println("<nav>");
         out.println("<a href= http://localhost:9090/addStudents> Add a student</a>");
-        out.println("<a href= http://localhost:9090/Courses> Courses</a>");
+        out.println("<a href= http://localhost:9090/addCourses> Add a course</a>");
         out.println("<a href= http://localhost:9090/Students> Students</a>");
         out.println("<a href= http://localhost:9090/Attendance> Sign up for courses</a>");
         out.println("</nav>");
@@ -49,6 +49,7 @@ public class AddCourseServlet extends HttpServlet {
             out.println("<html>");
             out.println("<head><title> Error! </title></head>");
             out.println("<h1> You have to type the number of YHP with numbers! </h1>");
+            out.println("<a href=http://localhost:9090/addCourses> Back </a> ");
             out.println("</html>");
             return;
         }
@@ -58,8 +59,10 @@ public class AddCourseServlet extends HttpServlet {
         if (!response) {
             out.println("<html><head><title>Error!</title></head>");
             out.println("<body><h1>An error occurred!</h1><p>All fields except lecturer must be filled in!</p></body></html>");
+            out.println("<a href=http://localhost:9090/addCourses> Back </a> ");
         } else {
             out.println("<html><head><title>Course Added!</title></head>");
+            out.println("<a href=http://localhost:9090/addCourses> Back </a> ");
             out.println("<body><h1>Course added!</h1></body></html>");
         }
     }
