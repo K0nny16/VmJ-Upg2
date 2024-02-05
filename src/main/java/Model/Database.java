@@ -13,7 +13,7 @@ public class Database {
         try{
             String studentInfo;
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(getConnection(dotenv.get("User_Port"),dotenv.get("User_User"),dotenv.get("User_DB"),dotenv.get("User_PW")));
+            Connection conn = DriverManager.getConnection(getConnection(dotenv.get("Port"),dotenv.get("User_User"),dotenv.get("DB"),dotenv.get("User_PW")));
             Statement statement = conn.createStatement();
             ResultSet rs = statement.executeQuery("SELECT *FROM Students");
             while(rs.next()){
@@ -31,7 +31,7 @@ public class Database {
         try{
             String coursesInfo;
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(getConnection(dotenv.get("User_Port"),dotenv.get("User_User"),dotenv.get("User_DB"),dotenv.get("User_PW")));
+            Connection conn = DriverManager.getConnection(getConnection(dotenv.get("Port"),dotenv.get("User_User"),dotenv.get("DB"),dotenv.get("User_PW")));
             Statement statement = conn.createStatement();
             ResultSet rs = statement.executeQuery("SELECT *FROM Courses");
             while(rs.next()){
@@ -49,7 +49,7 @@ public class Database {
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
             String studentCourseInfo;
-            Connection conn = DriverManager.getConnection(getConnection(dotenv.get("User_Port"),dotenv.get("User_User"),dotenv.get("User_DB"),dotenv.get("User_PW")));
+            Connection conn = DriverManager.getConnection(getConnection(dotenv.get("Port"),dotenv.get("User_User"),dotenv.get("DB"),dotenv.get("User_PW")));
             String sql = "SELECT students.fname, students.lname,courses.name, courses.id FROM attendance JOIN students ON attendance.students_id = students.id JOIN courses ON attendance.courses_id = courses.id WHERE students.fname = ? AND students.lname = ?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1,fname);
@@ -68,7 +68,7 @@ public class Database {
     public static boolean addStudent(String fname,String lname,String town,String hobby){
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(getConnection(dotenv.get("User_Port"),dotenv.get("Admin_User"),dotenv.get("User_DB"),dotenv.get("Admin_PW")));
+            Connection conn = DriverManager.getConnection(getConnection(dotenv.get("Port"),dotenv.get("Admin_User"),dotenv.get("DB"),dotenv.get("Admin_PW")));
             String sql = "INSERT INTO students(fname, lname, town, hobby) VALUES (?,?,?,?)";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1,fname);
@@ -86,7 +86,7 @@ public class Database {
     public static boolean addCourses(String name,int YHP,String description,String lector){
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(getConnection(dotenv.get("User_Port"),dotenv.get("Admin_User"),dotenv.get("User_DB"),dotenv.get("Admin_PW")));
+            Connection conn = DriverManager.getConnection(getConnection(dotenv.get("Port"),dotenv.get("Admin_User"),dotenv.get("DB"),dotenv.get("Admin_PW")));
             String sql = "INSERT INTO courses(name,YHP,description,lector) VALUES (?,?,?,?)";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1,name);
@@ -104,7 +104,7 @@ public class Database {
     public static boolean enroll(int courseId,int studentId){
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(getConnection(dotenv.get("User_Port"),dotenv.get("Admin_User"),dotenv.get("User_DB"),dotenv.get("Admin_PW")));
+            Connection conn = DriverManager.getConnection(getConnection(dotenv.get("Port"),dotenv.get("Admin_User"),dotenv.get("DB"),dotenv.get("Admin_PW")));
             if(isStudentEnrolled(conn,courseId,studentId))
                 return false;
             String sql = "INSERT INTO attendance (students_id,courses_id) VALUES (?,?)";
