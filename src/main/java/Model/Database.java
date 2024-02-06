@@ -1,10 +1,12 @@
 package Model;
 import io.github.cdimascio.dotenv.Dotenv;
 
+import java.io.PrintWriter;
 import java.sql.*;
 import java.util.ArrayList;
 public class Database {
-    static Dotenv dotenv = Dotenv.load();
+    private static final Dotenv dotenv = Dotenv.load();
+    private static String error ="";
     private static String getConnection(String port,String user,String db,String pw){
         return "jdbc:mysql://localhost:"+port+"/"+db+"?user="+user+"&password="+pw;
     }
@@ -22,6 +24,7 @@ public class Database {
             }
             conn.close();
         }catch (Exception ex){
+            error = ex.getMessage();
             ex.getStackTrace();
         }
         return student;
@@ -40,6 +43,7 @@ public class Database {
             }
             conn.close();
         }catch(Exception ex){
+            error = ex.getMessage();
             ex.getStackTrace();
         }
         return courses;
@@ -61,6 +65,7 @@ public class Database {
             }
             conn.close();
         }catch(Exception ex){
+            error = ex.getMessage();
             ex.getStackTrace();
         }
         return studentCourses;
@@ -79,7 +84,7 @@ public class Database {
             conn.close();
             return rowsChanged > 0;
         }catch(Exception ex){
-            System.out.println("Error "+ex.getMessage());
+            error = ex.getMessage();
             return false;
         }
     }
@@ -97,7 +102,7 @@ public class Database {
             conn.close();
             return rowsChanged > 0;
         }catch(Exception ex){
-            System.out.println("Error "+ex.getMessage());
+            error = ex.getMessage();
             return false;
         }
     }
@@ -115,12 +120,12 @@ public class Database {
             conn.close();
             return rowsChanged > 0;
         }catch(Exception ex){
-            System.out.println("Error "+ex.getMessage());
+            error = ex.getMessage();
             return false;
         }
     }
     private static boolean isStudentEnrolled(Connection conn,int courseId,int studentId) throws SQLException {
-        String sql = "SELECT COUNT(*) FROM attendance WHERE student_id = ? AND courses_id ?";
+        String sql = "SELECT COUNT(*) FROM attendance WHERE students_id = ? AND courses_id = ?";
         PreparedStatement ps = conn.prepareStatement(sql);
         ps.setInt(1,studentId);
         ps.setInt(2,courseId);
@@ -130,5 +135,11 @@ public class Database {
             return count > 0;
         }
         return false;
+    }
+    public static String getError() {
+        return error;
+    }
+    public static void setError(String error) {
+        Database.error = error;
     }
 }

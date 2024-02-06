@@ -1,0 +1,45 @@
+body{
+    margin: 0;
+    padding: 0; /* Tar bort den vita kanten */
+}
+nav {
+    background-color: #333; /* Gör baren svart */
+    padding: 12px;          /*Layout på texten och "tjockleken" på baren*/
+    display:flex;
+    justify-content: space-around;
+}
+nav a {
+    color: #fff;            /*Vit text istället för blå, tarbort _ */
+    text-decoration: none;
+    font-weight: bold;
+}
+h2 {
+    text-align: center;     /* Centerar titlen stylar den och sätter avståndet från navbaren.*/
+    margin-top: 20px;
+    font-style: italic;
+}
+.form-container {
+    width: 50%;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+.form-container input[type="text"],
+.form-container input[type="submit"] {
+    width: calc(100% - 22px);
+    padding: 10px;
+    margin: 5px 0;
+    box-sizing: border-box;
+}
+.form-container input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+.form-container input[type="submit"]:hover {    /* Ändrar färg när man hoovrar.*/
+    background-color: #45a049;
+}

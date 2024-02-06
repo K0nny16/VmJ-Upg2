@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Värd: localhost
--- Tid vid skapande: 05 feb 2024 kl 15:00
--- Serverversion: 10.4.28-MariaDB
--- PHP-version: 8.2.4
+-- Värd: 127.0.0.1
+-- Tid vid skapande: 06 feb 2024 kl 17:54
+-- Serverversion: 10.4.32-MariaDB
+-- PHP-version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Databas: `GritAcademy`
+-- Databas: `gritacademy`
 --
 
 -- --------------------------------------------------------
@@ -47,8 +47,6 @@ INSERT INTO `attendance` (`id`, `students_id`, `courses_id`) VALUES
 (7, 3, 1),
 (8, 4, 4),
 (9, 4, 5),
-(10, 5, 8),
-(11, 5, 4),
 (12, 6, 9),
 (13, 6, 6),
 (14, 7, 1),
@@ -101,7 +99,7 @@ INSERT INTO `courses` (`id`, `name`, `YHP`, `description`, `lector`) VALUES
 CREATE TABLE `students` (
   `id` int(11) NOT NULL,
   `fname` text NOT NULL,
-  `lname` text DEFAULT NULL,
+  `lname` text NOT NULL,
   `town` text DEFAULT NULL,
   `hobby` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -115,7 +113,6 @@ INSERT INTO `students` (`id`, `fname`, `lname`, `town`, `hobby`) VALUES
 (2, 'Anna', 'Andersson', 'Oxie', 'Måla'),
 (3, 'Erik', 'Svensson', 'Hör', 'Fotboll'),
 (4, 'Maria', 'Lindgren', 'Trelleborg', 'Musik'),
-(5, 'Karl', 'Johansson', 'Ystad', 'Teater'),
 (6, 'Sofia', 'Nilsson', 'Stockholm', 'Läsning'),
 (7, 'Oscar', 'Pettersson', 'Lund', 'Simning'),
 (8, 'Emelie', 'Gustafsson', 'Umeå', 'Dans'),
@@ -126,14 +123,15 @@ INSERT INTO `students` (`id`, `fname`, `lname`, `town`, `hobby`) VALUES
 -- --------------------------------------------------------
 
 --
--- Tabellstruktur `Users`
+-- Tabellstruktur `users`
 --
 
-CREATE TABLE `Users` (
+CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `studentID` int(11) NOT NULL,
   `username` text NOT NULL,
-  `password` text NOT NULL
+  `password` text NOT NULL,
+  `userTypes` enum('Admin','User') NOT NULL DEFAULT 'User'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -152,19 +150,22 @@ ALTER TABLE `attendance`
 -- Index för tabell `courses`
 --
 ALTER TABLE `courses`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `name` (`name`) USING HASH;
 
 --
 -- Index för tabell `students`
 --
 ALTER TABLE `students`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `fname` (`fname`) USING HASH;
 
 --
--- Index för tabell `Users`
+-- Index för tabell `users`
 --
-ALTER TABLE `Users`
+ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `username` (`username`) USING HASH,
   ADD KEY `studentID` (`studentID`);
 
 --
@@ -175,7 +176,7 @@ ALTER TABLE `Users`
 -- AUTO_INCREMENT för tabell `attendance`
 --
 ALTER TABLE `attendance`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT för tabell `courses`
@@ -190,10 +191,10 @@ ALTER TABLE `students`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
--- AUTO_INCREMENT för tabell `Users`
+-- AUTO_INCREMENT för tabell `users`
 --
-ALTER TABLE `Users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Restriktioner för dumpade tabeller
@@ -207,10 +208,10 @@ ALTER TABLE `attendance`
   ADD CONSTRAINT `attendance_ibfk_2` FOREIGN KEY (`courses_id`) REFERENCES `courses` (`id`) ON DELETE CASCADE;
 
 --
--- Restriktioner för tabell `Users`
+-- Restriktioner för tabell `users`
 --
-ALTER TABLE `Users`
-  ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`studentID`) REFERENCES `students` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `users`
+  ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`studentID`) REFERENCES `students` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
