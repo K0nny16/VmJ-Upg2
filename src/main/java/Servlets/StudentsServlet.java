@@ -1,7 +1,6 @@
 package Servlets;
 import Model.Database;
 import Model.Status;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -12,7 +11,7 @@ import java.util.ArrayList;
 @WebServlet(urlPatterns = "/Students")
 public class StudentsServlet extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         PrintWriter out = resp.getWriter();
         out.println("<html>");
         out.println("<head>");
@@ -46,7 +45,7 @@ public class StudentsServlet extends HttpServlet {
         out.println("</html>");
     }
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String fname = req.getParameter("fname");
         String lname = req.getParameter("lname");
         PrintWriter out = resp.getWriter();

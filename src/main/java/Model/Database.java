@@ -1,7 +1,5 @@
 package Model;
 import io.github.cdimascio.dotenv.Dotenv;
-
-import java.io.PrintWriter;
 import java.sql.*;
 import java.util.ArrayList;
 public class Database {
