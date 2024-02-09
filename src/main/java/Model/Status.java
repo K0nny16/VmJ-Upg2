@@ -1,10 +1,7 @@
 package Model;
-
 import java.io.PrintWriter;
-
 import static Model.Database.getError;
 import static Model.Database.setError;
-
 public class Status {
     public static void error(PrintWriter out, String title){
         out.println("<html>");
